@@ -29,38 +29,38 @@ Use Postman to test the endpoints
 
 ## Folder Structure
 /LiveLotAppAPI
-    /api
-        /controllers
-            lotCtrl.js
-            userCtrl.js
-        /models
-            lotModel.js
-            userModel.js
-        /routes
-            allRoutes.js
-    package.json
-    server.js
-    README.md
+----/api
+--------/controllers
+------------lotCtrl.js
+------------userCtrl.js
+--------/models
+------------lotModel.js
+------------userModel.js
+--------/routes
+------------allRoutes.js
+----package.json
+----server.js
+----README.md
 
 ## Endpoints
 /lot
-    - getAllLots - GET
-    - createLot - POST
-      - pass a body containing a 'lot' object
+    + getAllLots - GET
+    + createLot - POST
+      + pass a body containing a 'lot' object
 
 /lot/:lotId
-    - getLot/:lotId - GET
-    - updateLot/:lotId - PUT
-      - pass a body containing a 'lot' object
-    - deleteLot/:lotId - DELETE
+    + getLot/:lotId - GET
+    + updateLot/:lotId - PUT
+      + pass a body containing a 'lot' object
+    + deleteLot/:lotId - DELETE
 
 /user
-    - getAllUsers - GET
-    - createUser - POST
-      - pass a body containing a 'user' object
+    + getAllUsers - GET
+    + createUser - POST
+      + pass a body containing a 'user' object
 
 /user/:userId
-    - getUser/:userId - GET
-    - updateUser/:userId - PUT
-      - pass a body containing the updated 'user' object
-    - deleteUser/:userId - DELETE
+    + getUser/:userId - GET
+    + updateUser/:userId - PUT
+      + pass a body containing the updated 'user' object
+    + deleteUser/:userId - DELETE
