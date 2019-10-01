@@ -27,16 +27,19 @@ Dev Tools:
 - Git
   
 
-## How to run
+## How to run locally
 The first time you run the application, run the command `npm install` to install the necessary node modules
 
 Start the mongoDB server with by running the command `mongod` in the root of the project
 
-In a seperate terminal, start the node service
-`npm run start`
+In a seperate terminal, start the node service `npm run local`
+
 This runs the script `nodemon server.js` and runs the api on your local machine
 
 Use Postman to test the endpoints
+
+## How to test deployed application
+Test the endpoints with postman with using the API url: `https://livelotapi.herokuapp.com`
 
 ## Source Control and Heroku
 When you make changes to this API, it needs to be pushed to both the GitHub account and deployed to heroku
