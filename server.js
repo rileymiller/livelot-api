@@ -2,6 +2,8 @@
 *   server.js
 *   This file is the entry point for the API
 */
+require('dotenv').config();
+
 var express = require('express'),
     app = express(),
     port = process.env.PORT || 3000,
@@ -12,7 +14,7 @@ var express = require('express'),
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/userDb');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/livelotapi');
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
