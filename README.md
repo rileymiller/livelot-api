@@ -38,6 +38,21 @@ This runs the script `nodemon server.js` and runs the api on your local machine
 
 Use Postman to test the endpoints
 
+## Source Control and Heroku
+When you make changes to this API, it needs to be pushed to both the GitHub account and deployed to heroku
+- Commit and push changes to Github `git commit -m "your commit message"` then push with `git push origin master`
+  
+- Deploy to Heroku `git push heroku master`
+  - you may need to add a new remote branch for heroku.
+
+You should have the following remote origins
+```
+heroku	https://git.heroku.com/livelotapi.git (fetch)
+heroku	https://git.heroku.com/livelotapi.git (push)
+origin	https://github.com/maddiearogers/LiveLotAppAPI (fetch)
+origin	https://github.com/maddiearogers/LiveLotAppAPI (push)
+```
+
 ## Folder Structure
     /LiveLotAppAPI
         /api
