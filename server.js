@@ -10,6 +10,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     User = require('./api/models/userModel'), //created User model loading here
     Lot = require('./api/models/lotModel'), //created Lot model loading here
+    Feedback = require('./api/models/feedbackModel'), //created Feedback model loading here
     bodyParser = require('body-parser');
 
 // mongoose instance connection url connection
