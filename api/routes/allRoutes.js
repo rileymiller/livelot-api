@@ -1,13 +1,14 @@
 /*
 *   allRoutes.js
 *   This file sets up the routes for the LiveLotAppAPI
-*   Initially this file just has routes for the 'user' object and 'lot' object, but all the routes for the application
+*   Initially this file just has routes for the 'user' object, 'lot' object, and 'feedback' object, but all the routes for the application
 *   will eventually be written in here once the schemas and controllers are created.
 */
 'use strict';
 module.exports = function (app) {
     var user = require('../controllers/userCtrl');
     var lot = require('../controllers/lotCtrl');
+    var feedback = require('../controllers/feedbackCtrl');
 
     // user Routes
     app.route('/user')
@@ -28,4 +29,9 @@ module.exports = function (app) {
         .get(lot.getLot)
         .put(lot.updateLot)
         .delete(lot.deleteLot);
+
+    // feedback Routes
+    app.route('/feedback')
+        .get(feedback.getAllFeedback)
+        .post(feedback.createFeedback);
 };
