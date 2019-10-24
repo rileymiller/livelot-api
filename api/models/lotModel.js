@@ -23,6 +23,10 @@ var LotSchema = new Schema({
   lotAddress: {
     type: String,
     required: true
+  },
+  lotStatus: {
+    type: Boolean,
+    required: true
   }
 });
 
