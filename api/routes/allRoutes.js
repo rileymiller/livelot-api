@@ -35,8 +35,8 @@ module.exports = function(app) {
     .delete(lot.deleteLot);
 
   // increment and decrement lots by ID
-  app.route("/increment/:lotId").put(lot.increment);
-  app.route("/decrement/:lotId").put(lot.decrement);
+  app.route("/lot/:lotId/carOut").put(lot.carOut);
+  app.route("/lot/:lotId/carIn").put(lot.carIn);
 
   // feedback Routes
   app

@@ -53,7 +53,8 @@ exports.deleteLot = function(req, res) {
   );
 };
 
-exports.increment = function(req, res) {
+// increments numSpots when a car goes
+exports.carOut = function(req, res) {
   // Get the lot by lotID
   Lot.findById(req.params.lotId, function(err, lot) {
     if (err) res.send(err);
@@ -72,7 +73,8 @@ exports.increment = function(req, res) {
   });
 };
 
-exports.decrement = function(req, res) {
+// decrements numSpots when a car comes in
+exports.carIn = function(req, res) {
   // Get the lot by lotID
   Lot.findById(req.params.lotId, function(err, lot) {
     if (err) res.send(err);
