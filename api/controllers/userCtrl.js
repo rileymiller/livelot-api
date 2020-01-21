@@ -8,43 +8,43 @@
 var mongoose = require('mongoose'),
     User = mongoose.model('User');
 
-exports.getAllUsers = function (req, res) {
-    User.find({}, function (err, user) {
+exports.getAllUsers = (req, res) => {
+    User.find({}, (err, user) => {
         if (err)
             res.send(err);
         res.json(user);
     });
 };
 
-exports.createUser = function (req, res) {
+exports.createUser = (req, res) => {
     var newUser = new User(req.body);
-    newUser.save(function (err, user) {
+    newUser.save((err, user) => {
         if (err)
             res.send(err);
         res.json(user);
     });
 };
 
-exports.getUser = function (req, res) {
-    User.findById(req.params.userId, function (err, user) {
+exports.getUser = (req, res) => {
+    User.findById(req.params.userId, (err, user) => {
         if (err)
             res.send(err);
         res.json(user);
     });
 };
 
-exports.updateUser = function (req, res) {
-    User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, function (err, user) {
+exports.updateUser = (req, res) => {
+    User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, (err, user) => {
         if (err)
             res.send(err);
         res.json(user);
     });
 };
 
-exports.deleteUser = function (req, res) {
+exports.deleteUser = (req, res) => {
     User.remove({
         _id: req.params.userId
-    }, function (err, user) {
+    }, (err, user) => {
         if (err)
             res.send(err);
         res.json({ message: 'User successfully deleted' });
