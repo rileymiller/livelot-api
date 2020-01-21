@@ -5,7 +5,7 @@
  *   will eventually be written in here once the schemas and controllers are created.
  */
 "use strict";
-module.exports = function(app) {
+module.exports = (app) => {
   var user = require("../controllers/userCtrl");
   var lot = require("../controllers/lotCtrl");
   var feedback = require("../controllers/feedbackCtrl");

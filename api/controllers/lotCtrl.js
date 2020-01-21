@@ -7,29 +7,29 @@
 var mongoose = require("mongoose"),
   Lot = mongoose.model("Lot");
 
-exports.getAllLots = function(req, res) {
-  Lot.find({}, function(err, lot) {
+exports.getAllLots = (req, res) => {
+  Lot.find({}, (err, lot) => {
     if (err) res.send(err);
     res.json(lot);
   });
 };
 
-exports.createLot = function(req, res) {
+exports.createLot = (req, res) => {
   var newLot = new Lot(req.body);
-  newLot.save(function(err, lot) {
+  newLot.save((err, lot) => {
     if (err) res.send(err);
     res.json(lot);
   });
 };
 
-exports.getLot = function(req, res) {
-  Lot.findById(req.params.lotId, function(err, lot) {
+exports.getLot = (req, res) => {
+  Lot.findById(req.params.lotId, (err, lot) => {
     if (err) res.send(err);
     res.json(lot);
   });
 };
 
-exports.updateLot = function(req, res) {
+exports.updateLot = (req, res) => {
   Lot.findOneAndUpdate(
     { _id: req.params.lotId },
     req.body,
@@ -41,7 +41,7 @@ exports.updateLot = function(req, res) {
   );
 };
 
-exports.deleteLot = function(req, res) {
+exports.deleteLot = (req, res) => {
   Lot.remove(
     {
       _id: req.params.lotId
@@ -54,9 +54,9 @@ exports.deleteLot = function(req, res) {
 };
 
 // increments numSpots when a car goes
-exports.carOut = function(req, res) {
+exports.carOut = (req, res) => {
   // Get the lot by lotID
-  Lot.findById(req.params.lotId, function(err, lot) {
+  Lot.findById(req.params.lotId, (err, lot) => {
     if (err) res.send(err);
     // increment the number of spots
     req.body.numSpots = lot.numSpots += 1;
@@ -65,8 +65,9 @@ exports.carOut = function(req, res) {
       { _id: req.params.lotId },
       req.body,
       { new: true },
-      function(err, lot) {
+      (err, lot) => {
         if (err) res.send(err);
+        global.io.emit('Car Out', lot);
         res.json(lot);
       }
     );
@@ -74,9 +75,9 @@ exports.carOut = function(req, res) {
 };
 
 // decrements numSpots when a car comes in
-exports.carIn = function(req, res) {
+exports.carIn = (req, res) => {
   // Get the lot by lotID
-  Lot.findById(req.params.lotId, function(err, lot) {
+  Lot.findById(req.params.lotId, (err, lot) => {
     if (err) res.send(err);
     // decrement the number of spots
     req.body.numSpots = lot.numSpots -= 1;
@@ -85,8 +86,9 @@ exports.carIn = function(req, res) {
       { _id: req.params.lotId },
       req.body,
       { new: true },
-      function(err, lot) {
+      (err, lot) => {
         if (err) res.send(err);
+        global.io.emit('Car In', lot);
         res.json(lot);
       }
     );

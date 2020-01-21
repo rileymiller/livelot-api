@@ -7,18 +7,18 @@
 var mongoose = require('mongoose'),
     Feedback = mongoose.model('Feedback');
 
-exports.getAllFeedback = function (req, res) {
-    Feedback.find({}, function (err, feedback) {
+exports.getAllFeedback = (req, res) => {
+    Feedback.find({}, (err, feedback) => {
         if (err)
             res.send(err);
         res.json(feedback);
     });
 };
 
-exports.createFeedback = function (req, res) {
+exports.createFeedback = (req, res) => {
     req.body.date = new Date();
     var newFeedback = new Feedback(req.body);
-    newFeedback.save(function (err, feedback) {
+    newFeedback.save((err, feedback) => {
         if (err)
             res.send(err);
         res.json(feedback);
