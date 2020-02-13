@@ -11,6 +11,7 @@ var app = require('express')(),
   mongoose = require("mongoose"),
   User = require("./api/models/userModel"), //created User model loading here
   Lot = require("./api/models/lotModel"), //created Lot model loading here
+  LotLog = require("./api/models/lotLogModel"), // create LotLog model loading here
   LotFunctions = require("./api/controllers/lotCtrl"),
   Feedback = require("./api/models/feedbackModel"), //created Feedback model loading here
   bodyParser = require("body-parser");
@@ -22,7 +23,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(
   process.env.MONGODB_URI || "mongodb://localhost/livelotapi",
   (err, Database) => {
-    io.on("connection", (socket) => {});
+    io.on("connection", (socket) => { });
   }
 );
 

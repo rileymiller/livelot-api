@@ -9,6 +9,7 @@ module.exports = (app) => {
   var user = require("../controllers/userCtrl");
   var lot = require("../controllers/lotCtrl");
   var feedback = require("../controllers/feedbackCtrl");
+  var log = require("../controllers/lotLogCtrl");
 
   // user Routes
   app
@@ -33,6 +34,16 @@ module.exports = (app) => {
     .get(lot.getLot)
     .put(lot.updateLot)
     .delete(lot.deleteLot);
+
+  // log route(s)
+  app
+    .route("/log")
+    .get(log.getAllLogs)
+
+  // get log for route
+  app
+    .route("/log/:lotId")
+    .get(log.getLogsForLot)
 
   // increment and decrement lots by ID
   app.route("/lot/:lotId/carOut").put(lot.carOut);

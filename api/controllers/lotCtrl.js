@@ -7,6 +7,8 @@
 var mongoose = require("mongoose"),
   Lot = mongoose.model("Lot");
 
+var LotLog = mongoose.model("LotLog")
+
 exports.getAllLots = (req, res) => {
   Lot.find({}, (err, lot) => {
     if (err) res.send(err);
@@ -34,7 +36,7 @@ exports.updateLot = (req, res) => {
     { _id: req.params.lotId },
     req.body,
     { new: true },
-    function(err, lot) {
+    function (err, lot) {
       if (err) res.send(err);
       res.json(lot);
     }
@@ -46,7 +48,7 @@ exports.deleteLot = (req, res) => {
     {
       _id: req.params.lotId
     },
-    function(err, lot) {
+    function (err, lot) {
       if (err) res.send(err);
       res.json({ message: "Lot successfully deleted" });
     }
@@ -71,6 +73,22 @@ exports.carOut = (req, res) => {
         res.json(lot);
       }
     );
+
+
+    // log that a car left the lot
+    var log = new LotLog({
+      _id: req.params.lotId,
+      numSpots: req.params.numSpots,
+      totalSpots: req.params.totalSpots,
+      time: Date(),
+      didCarEnter: false
+    });
+
+    log.save((err, log) => {
+      if (err) res.send(err);
+      res.json(log);
+    });
+
   });
 };
 
@@ -92,5 +110,19 @@ exports.carIn = (req, res) => {
         res.json(lot);
       }
     );
+
+    // log that a car entered the lot
+    var log = new LotLog({
+      _id: req.params.lotId,
+      numSpots: req.params.numSpots,
+      totalSpots: req.params.totalSpots,
+      time: Date(),
+      didCarEnter: true
+    });
+
+    log.save((err, log) => {
+      if (err) res.send(err);
+      res.json(log);
+    });
   });
 };
