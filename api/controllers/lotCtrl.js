@@ -69,12 +69,12 @@ exports.carOut = (req, res) => {
       { new: true },
       (err, lot) => {
         if (err) res.send(err);
-        global.io.emit('Car Out', lot);
         // res.json(lot);
-
+        console.log('about to create log')
         // log that a car left the lot
         var log = new LotLog({
           _id: lot.lotId,
+          lotName: lot.lotName,
           numSpots: lot.numSpots,
           totalSpots: lot.totalSpots,
           time: Date(),
@@ -83,6 +83,9 @@ exports.carOut = (req, res) => {
 
         log.save((err, log) => {
           if (err) res.send(err);
+          console.log('inside log callback')
+
+          global.io.emit('Car Out', lot);
           res.json(lot);
         });
       }
@@ -105,11 +108,12 @@ exports.carIn = (req, res) => {
       { new: true },
       (err, lot) => {
         if (err) res.send(err);
-        global.io.emit('Car In', lot);
         // res.json(lot);
+        console.log('about to create log')
         // log that a car entered the lot
         var log = new LotLog({
           _id: lot.lotId,
+          lotName: lot.lotName,
           numSpots: lot.numSpots,
           totalSpots: lot.totalSpots,
           time: Date(),
@@ -118,6 +122,8 @@ exports.carIn = (req, res) => {
 
         log.save((err, log) => {
           if (err) res.send(err);
+          console.log('inside log callback')
+          global.io.emit('Car In', lot);
           res.json(lot);
         });
       }
