@@ -26,3 +26,17 @@ exports.getLogsForLot = (req, res) => {
     })
   });
 };
+
+exports.getLogsForLots = (req, res) => {
+  var lotIds = req.body.lotIds
+
+  lotIds.map((id) => {
+    LotLog.findById(id, (err, log) => {
+      // find lot here
+    })
+  })
+  // LotLog.find({ id: { $in: lotIds } }, (err, logs) => {
+  //   if (err) res.send(err);
+
+  // })
+}

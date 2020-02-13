@@ -71,8 +71,8 @@ exports.carOut = (req, res) => {
         if (err) res.send(err);
         // log that a car left the lot
         var log = new LotLog({
-          _id: lot.lotId,
           lotName: lot.lotName,
+          lotId: lotId,
           numSpots: lot.numSpots,
           totalSpots: lot.totalSpots,
           time: Date(),
@@ -107,8 +107,8 @@ exports.carIn = (req, res) => {
         if (err) res.send(err);
         // log that a car entered the lot
         var log = new LotLog({
-          _id: lot.lotId,
           lotName: lot.lotName,
+          lotId: lot.lotId,
           numSpots: lot.numSpots,
           totalSpots: lot.totalSpots,
           time: Date(),

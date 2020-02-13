@@ -12,6 +12,10 @@ var LotLogSchema = new Schema({
     type: String,
     required: true
   },
+  lotId: {
+    type: String,
+    required: true
+  },
   numSpots: {
     type: Number,
     required: true
