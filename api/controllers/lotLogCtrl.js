@@ -27,6 +27,13 @@ exports.getLogsForLot = (req, res) => {
   });
 };
 
+exports.deleteAllLogs = (req, res) => {
+  LotLog.remove({}, (err, lot) => {
+    if (err) res.send(err);
+    res.json({ message: "Successfully deleted all lots" });
+  })
+}
+
 exports.getLogsForLots = (req, res) => {
   var lotIds = req.body.lotIds
 
