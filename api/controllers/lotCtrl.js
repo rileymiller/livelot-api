@@ -70,7 +70,7 @@ exports.carOut = (req, res) => {
       (err, lot) => {
         if (err) res.send(err);
         global.io.emit('Car Out', lot);
-        res.json(lot);
+        // res.json(lot);
 
         // log that a car left the lot
         var log = new LotLog({
@@ -83,7 +83,7 @@ exports.carOut = (req, res) => {
 
         log.save((err, log) => {
           if (err) res.send(err);
-          res.json(log);
+          res.json(lot);
         });
       }
     );
@@ -106,7 +106,7 @@ exports.carIn = (req, res) => {
       (err, lot) => {
         if (err) res.send(err);
         global.io.emit('Car In', lot);
-        res.json(lot);
+        // res.json(lot);
         // log that a car entered the lot
         var log = new LotLog({
           _id: lot.lotId,
@@ -118,7 +118,7 @@ exports.carIn = (req, res) => {
 
         log.save((err, log) => {
           if (err) res.send(err);
-          res.json(log);
+          res.json(lot);
         });
       }
     );
