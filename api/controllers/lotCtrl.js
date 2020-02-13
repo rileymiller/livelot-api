@@ -72,7 +72,7 @@ exports.carOut = (req, res) => {
         // log that a car left the lot
         var log = new LotLog({
           lotName: lot.lotName,
-          lotId: lotId,
+          lotId: lot.lotId,
           numSpots: lot.numSpots,
           totalSpots: lot.totalSpots,
           time: Date(),
