@@ -71,23 +71,22 @@ exports.carOut = (req, res) => {
         if (err) res.send(err);
         global.io.emit('Car Out', lot);
         res.json(lot);
+
+        // log that a car left the lot
+        var log = new LotLog({
+          _id: lot.lotId,
+          numSpots: lot.numSpots,
+          totalSpots: lot.totalSpots,
+          time: Date(),
+          didCarEnter: false
+        });
+
+        log.save((err, log) => {
+          if (err) res.send(err);
+          res.json(log);
+        });
       }
     );
-
-
-    // log that a car left the lot
-    var log = new LotLog({
-      _id: req.params.lotId,
-      numSpots: req.params.numSpots,
-      totalSpots: req.params.totalSpots,
-      time: Date(),
-      didCarEnter: false
-    });
-
-    log.save((err, log) => {
-      if (err) res.send(err);
-      res.json(log);
-    });
 
   });
 };
@@ -108,21 +107,20 @@ exports.carIn = (req, res) => {
         if (err) res.send(err);
         global.io.emit('Car In', lot);
         res.json(lot);
+        // log that a car entered the lot
+        var log = new LotLog({
+          _id: lot.lotId,
+          numSpots: lot.numSpots,
+          totalSpots: lot.totalSpots,
+          time: Date(),
+          didCarEnter: true
+        });
+
+        log.save((err, log) => {
+          if (err) res.send(err);
+          res.json(log);
+        });
       }
     );
-
-    // log that a car entered the lot
-    var log = new LotLog({
-      _id: req.params.lotId,
-      numSpots: req.params.numSpots,
-      totalSpots: req.params.totalSpots,
-      time: Date(),
-      didCarEnter: true
-    });
-
-    log.save((err, log) => {
-      if (err) res.send(err);
-      res.json(log);
-    });
   });
 };
