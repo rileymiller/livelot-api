@@ -90,6 +90,7 @@ origin	https://github.com/maddiearogers/LiveLotAppAPI (push)
     /log
         getAllLogs - GET
         deleteAllLogs - DELETE
+        getLogsForLots - POST
     
     /log/:lotId
         getLogsForLot - GET
