@@ -40,6 +40,7 @@ module.exports = (app) => {
     .route("/log")
     .get(log.getAllLogs)
     .delete(log.deleteAllLogs)
+    .post(log.getLogsForLots)
 
   // get log for route
   app

@@ -20,7 +20,7 @@ exports.getLogsForLot = (req, res) => {
   Lot.findById(req.params.lotId, (err, lot) => {
     if (err) res.send(err);
 
-    LotLog.find({ "lotName": lot.lotName }, (err, log) => {
+    LotLog.find({ "lotId": lot.lotId }, (err, log) => {
       if (err) res.send(err);
       res.json(log)
     })
@@ -34,16 +34,24 @@ exports.deleteAllLogs = (req, res) => {
   })
 }
 
-exports.getLogsForLots = (req, res) => {
-  var lotIds = req.body.lotIds
+exports.getLogsForLots = async (req, res) => {
+  var lotIds = JSON.parse(req.body.lotIds)
 
-  lotIds.map((id) => {
-    LotLog.findById(id, (err, log) => {
-      // find lot here
+  LotLog.find({ lotId: { $in: lotIds } }, (err, logs) => {
+    if (err) res.send(err)
+    var entries = lotIds.map((lotId) => {
+      return (
+        {
+          id: lotId,
+          lots: [
+            ...logs.filter((log) => {
+              return log.lotId === lotId
+            })
+          ]
+        }
+      )
     })
-  })
-  // LotLog.find({ id: { $in: lotIds } }, (err, logs) => {
-  //   if (err) res.send(err);
 
-  // })
+    res.send(entries)
+  })
 }
