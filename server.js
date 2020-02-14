@@ -21,11 +21,11 @@ global.io = io; // so we can emit data via the socket in any controller
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/livelotapi",
+  process.env.MONGODB_URI || "mongodb://mongo:27017/LiveLotAPI",
   (err, Database) => {
     io.on("connection", (socket) => { });
   }
-);
+).then(() => console.log('MongoDB connected!'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
