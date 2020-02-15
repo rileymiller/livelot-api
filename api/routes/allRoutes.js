@@ -23,6 +23,15 @@ module.exports = (app) => {
     .put(user.updateUser)
     .delete(user.deleteUser);
 
+  app
+    .route("/signup")
+    .post(user.signup)
+
+  app
+    .route('/login')
+    .post(user.login)
+
+
   // lot Routes
   app
     .route("/lot")
