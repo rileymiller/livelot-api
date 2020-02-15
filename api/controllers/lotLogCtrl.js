@@ -19,8 +19,7 @@ exports.getAllLogs = (req, res) => {
 exports.getLogsForLot = (req, res) => {
   Lot.findById(req.params.lotId, (err, lot) => {
     if (err) res.send(err);
-
-    LotLog.find({ "lotId": lot.lotId }, (err, log) => {
+    LotLog.find({ "lotId": lot._id }, (err, log) => {
       if (err) res.send(err);
       res.json(log)
     })
