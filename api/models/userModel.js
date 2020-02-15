@@ -25,6 +25,10 @@ var UserSchema = new Schema({
     },
     phoneNumber: {
         type: String
+    },
+    createdDate: {
+        type: Date,
+        default: Date.now()
     }
 });
 
