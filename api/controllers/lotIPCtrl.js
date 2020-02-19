@@ -17,17 +17,35 @@ exports.getAllLotIPs = (req, res) => {
 };
 
 exports.logLotIPAddress = (req, res) => {
-  const { lotId } = req.body
+  const { lotId, lotName } = req.body
+
   Lot.findById(lotId, (err, lot) => {
     if (err) res.status(400).json({
       msg: "Lot doesn't exist"
     })
 
-    var lotIP = new LotIP(req.body);
-    lotIP.save((err, lotIP) => {
-      if (err) res.send(err);
-      res.json(lotIP);
-    });
+    LotIP.find({ "lotName": lotName }, (err, lotIPEntry) => {
+      if (err) res.send(err)
+
+      if (lotIPEntry.length === 1) {
+        LotIP.findOneAndUpdate({
+          _id: lotIPEntry[0]._id
+        },
+          req.body,
+          { new: true },
+          (err, updatedIPEntry) => {
+            if (err) res.send(err)
+            res.send(updatedIPEntry)
+          }
+        )
+      } else {
+        var lotIP = new LotIP(req.body);
+        lotIP.save((err, lotIP) => {
+          if (err) res.send(err);
+          res.json(lotIP);
+        });
+      }
+    })
   })
 }
 
