@@ -1,7 +1,7 @@
 /*
- *   lotLogModel.js
- *   This file creates the database schema for a 'log' object
- *   Attributes can be added to the 'log' schema as needed
+ *   lotIPAddressModel.js
+ *   This file creates the database schema for a 'lotIP' object
+ *   Attributes can be added to the 'lotIP' schema as needed
  */
 "use strict";
 var mongoose = require("mongoose");
