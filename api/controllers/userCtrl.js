@@ -141,7 +141,7 @@ exports.login = async (req, res) => {
         });
         if (!user)
             return res.status(400).json({
-                message: "User Not Exist"
+                message: "User Does Not Exist"
             });
 
         const isMatch = await bcrypt.compare(password, user.password);
