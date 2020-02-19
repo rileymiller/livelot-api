@@ -28,13 +28,19 @@ Dev Tools:
   
 
 ## How to run locally
-The first time you run the application, run the command `npm install` to install the necessary node modules
+Preferrable to now run with the Docker container.
+<!-- The first time you run the application, run the command `npm install` to install the necessary node modules
 
 Start the mongoDB server with by running the command `mongod` in the root of the project
 
 In a seperate terminal, start the node service `npm run local`
 
-This runs the script `nodemon server.js` and runs the api on your local machine
+This runs the script `nodemon server.js` and runs the api on your local machine -->
+
+Running with Docker
+You can build the app and run the mongoDB locally by running the command `npm run docker` or `docker-compose up`.
+    - make sure you have docker installed.
+    - The mongoDB and node app are in different containers, so if the app crashes, the data will be persisted.
 
 Use Postman to test the endpoints
 
