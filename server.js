@@ -11,6 +11,7 @@ var app = require('express')(),
   mongoose = require("mongoose"),
   User = require("./api/models/userModel"), //created User model loading here
   Lot = require("./api/models/lotModel"), //created Lot model loading here
+  LotIP = require("./api/models/lotIPAddressModel"),
   LotLog = require("./api/models/lotLogModel"), // create LotLog model loading here
   LotFunctions = require("./api/controllers/lotCtrl"),
   Feedback = require("./api/models/feedbackModel"), //created Feedback model loading here

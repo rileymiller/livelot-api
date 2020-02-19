@@ -88,6 +88,14 @@ origin	https://github.com/maddiearogers/LiveLotAppAPI (push)
         updateLot/:lotId - PUT
             - pass a body containing a 'lot' object
         deleteLot/:lotId - DELETE
+
+    /lotIP
+        getAllLotIPs - GET
+        deleteAllLotIPs - DELETE
+        logLotIPAddress - POST
+
+    /lotIP/:lotId
+        getLotIPForLot - GET
     
     /lot/:lotId/
         carOut - PUT

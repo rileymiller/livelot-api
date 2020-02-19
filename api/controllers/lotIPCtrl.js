@@ -9,7 +9,7 @@ var mongoose = require("mongoose"),
   LotIP = mongoose.model("LotIP")
 
 
-exports.getAllLotIP = (req, res) => {
+exports.getAllLotIPs = (req, res) => {
   LotIP.find({}, (err, log) => {
     if (err) res.send(err);
     res.json(log);
@@ -18,12 +18,12 @@ exports.getAllLotIP = (req, res) => {
 
 exports.logLotIPAddress = (req, res) => {
   const { lotId } = req.body
-  Lot.findById(lotId, (req, res) => {
+  Lot.findById(lotId, (err, lot) => {
     if (err) res.status(400).json({
       msg: "Lot doesn't exist"
     })
 
-    lotIP = new LotIP(req.body);
+    var lotIP = new LotIP(req.body);
     lotIP.save((err, lotIP) => {
       if (err) res.send(err);
       res.json(lotIP);
@@ -44,6 +44,6 @@ exports.getLotIPForLot = (req, res) => {
 exports.deleteAllLotIPs = (req, res) => {
   LotIP.remove({}, (err, lot) => {
     if (err) res.send(err);
-    res.json({ message: "Successfully deleted all lots" });
+    res.json({ message: "Successfully deleted all lot IP address entries" });
   })
 }

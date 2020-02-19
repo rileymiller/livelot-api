@@ -10,6 +10,7 @@ module.exports = (app) => {
   var lot = require("../controllers/lotCtrl");
   var feedback = require("../controllers/feedbackCtrl");
   var log = require("../controllers/lotLogCtrl");
+  var lotIP = require("../controllers/lotIPCtrl")
 
   // user Routes
   app
@@ -34,6 +35,16 @@ module.exports = (app) => {
     .get(lot.getLot)
     .put(lot.updateLot)
     .delete(lot.deleteLot);
+
+  app
+    .route("/lotIP")
+    .get(lotIP.getAllLotIPs)
+    .delete(lotIP.deleteAllLotIPs)
+    .post(lotIP.logLotIPAddress)
+
+  app
+    .route("/lotIP/:lotId")
+    .get(lotIP.getLotIPForLot)
 
   // log route(s)
   app
