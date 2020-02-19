@@ -21,6 +21,14 @@ exports.getAllUsers = (req, res) => {
     });
 };
 
+exports.deleteAllUsers = (req, res) => {
+    User.remove({}, (err, user) => {
+        if (err)
+            res.send(err);
+        res.json({ message: 'Deleted all users' });
+    });
+};
+
 exports.createUser = (req, res) => {
     var newUser = new User(req.body);
     newUser.save((err, user) => {
@@ -56,15 +64,6 @@ exports.deleteUser = (req, res) => {
     });
 };
 
-// exports.signupValidation = [
-//     check("username", "Please Enter a Valid Username")
-//         .not()
-//         .isEmpty(),
-//     check("email", "Please enter a valid email").isEmail(),
-//     check("password", "Please enter a valid password").isLength({
-//         min: 6
-//     })
-// ]
 exports.signup = async (req, res) => {
 
     const errors = validationResult(req);
@@ -126,6 +125,64 @@ exports.signup = async (req, res) => {
     }
 }
 
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
+    const errors = validationResult(req);
 
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            errors: errors.array()
+        });
+    }
+
+    const { email, password } = req.body;
+    try {
+        let user = await User.findOne({
+            email
+        });
+        if (!user)
+            return res.status(400).json({
+                message: "User Not Exist"
+            });
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch)
+            return res.status(400).json({
+                message: "Incorrect Password!"
+            });
+
+        const payload = {
+            user: {
+                id: user.id
+            }
+        };
+
+        jwt.sign(
+            payload,
+            "secret",
+            {
+                expiresIn: 3600
+            },
+            (err, token) => {
+                if (err) throw err;
+                res.status(200).json({
+                    token
+                });
+            }
+        );
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({
+            message: "Server Error"
+        });
+    }
+}
+
+exports.me = async (req, res) => {
+    try {
+        // request.user is getting fetched from Middleware after token authentication
+        const user = await User.findById(req.user.id);
+        res.json(user);
+    } catch (e) {
+        res.send({ message: "Error in Fetching user" });
+    }
 }

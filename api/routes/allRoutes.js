@@ -10,12 +10,20 @@ module.exports = (app) => {
   var lot = require("../controllers/lotCtrl");
   var feedback = require("../controllers/feedbackCtrl");
   var log = require("../controllers/lotLogCtrl");
+  var auth = require("../middleware/auth")
 
   // user Routes
   app
     .route("/user")
     .get(user.getAllUsers)
-    .post(user.createUser);
+    .post(user.createUser)
+    .delete(user.deleteAllUsers);
+
+  // This route is called after a token is grabbed from the login/ route
+  app
+    .route("/user/me")
+    .get(auth, user.me)
+
 
   app
     .route("/user/:userId")
@@ -23,10 +31,12 @@ module.exports = (app) => {
     .put(user.updateUser)
     .delete(user.deleteUser);
 
+  // Route used to signup a user
   app
     .route("/signup")
     .post(user.signup)
 
+  // Route used to login a user
   app
     .route('/login')
     .post(user.login)
