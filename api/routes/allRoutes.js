@@ -41,6 +41,10 @@ module.exports = (app) => {
     .route('/login')
     .post(user.login)
 
+  app
+    .route('/resetPassword')
+    .post(user.resetPassword)
+
 
   // lot Routes
   app

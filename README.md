@@ -106,6 +106,22 @@ origin	https://github.com/maddiearogers/LiveLotAppAPI (push)
         createUser - POST
             - pass a body containing a 'user' object
 
+    /user/me
+        me - GET 
+            - pass the returned jwt in a "token" field in the GET header 
+
+    /login
+        login - POST
+            - pass a body object containing a 'user' object
+    
+    /signup
+        signup - POST
+            - pass a body object containing a 'user' object
+
+    /resetPassword
+        resetPassword - POST
+            - pass an object containing (username, email, password, newPassword, confirmNewPassword)
+
     /user/:userId
         getUser/:userId - GET
         updateUser/:userId - PUT

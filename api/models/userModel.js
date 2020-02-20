@@ -21,7 +21,8 @@ var UserSchema = new Schema({
         type: String
     },
     email: {
-        type: String
+        type: String,
+        required: true
     },
     phoneNumber: {
         type: String
