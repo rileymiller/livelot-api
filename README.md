@@ -105,7 +105,6 @@ origin	https://github.com/maddiearogers/LiveLotAppAPI (push)
         getAllUsers - GET
         createUser - POST
             - pass a body containing a 'user' object
-        deleteAllUsers - DELETE
 
     /user/me
         me - GET 

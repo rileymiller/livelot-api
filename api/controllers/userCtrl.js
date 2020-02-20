@@ -223,10 +223,6 @@ exports.resetPassword = async (req, res) => {
             })
 
         try {
-            const newUser = {
-                ...user,
-                password: newPassword,
-            }
 
             let updatedUser = await User.findOneAndUpdate({ username: user.username }, { password: newPassword }, { new: true })
             console.log('updatedUser.password pre hash', updatedUser.password)
