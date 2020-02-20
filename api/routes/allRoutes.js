@@ -17,7 +17,7 @@ module.exports = (app) => {
     .route("/user")
     .get(user.getAllUsers)
     .post(user.createUser)
-  // .delete(user.deleteAllUsers);s
+    .delete(user.deleteAllUsers); s
 
   // This route is called after a token is grabbed from the login/ route
   app
@@ -29,7 +29,7 @@ module.exports = (app) => {
     .route("/user/:userId")
     .get(user.getUser)
     .put(user.updateUser)
-  // .delete(user.deleteUser);
+    .delete(user.deleteUser);
 
   // Route used to signup a user
   app
