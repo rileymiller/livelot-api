@@ -60,7 +60,7 @@ exports.deleteUser = (req, res) => {
     }, (err, user) => {
         if (err)
             res.send(err);
-        res.json({ message: 'User successfully deleted' });
+        res.json({ message: 'OK: 200 User successfully deleted' });
     });
 };
 
@@ -86,7 +86,7 @@ exports.signup = async (req, res) => {
 
         if (user) {
             return res.status(400).json({
-                msg: "User Already Exists"
+                message: "Error: 400 - User Already Exists"
             });
         }
 
@@ -106,12 +106,13 @@ exports.signup = async (req, res) => {
                 id: user.id
             }
         };
-
+        console.log('payload', payload)
         jwt.sign(
             payload,
-            "randomString", {
-            expiresIn: 10000
-        },
+            "secret",
+            {
+                expiresIn: 3600
+            },
             (err, token) => {
                 if (err) throw err;
                 res.status(200).json({
@@ -121,7 +122,7 @@ exports.signup = async (req, res) => {
         );
     } catch (err) {
         console.log(err.message);
-        res.status(500).send("Error in Saving");
+        res.status(500).send("Error: 500 - Error in Saving");
     }
 }
 
@@ -141,13 +142,13 @@ exports.login = async (req, res) => {
         });
         if (!user)
             return res.status(400).json({
-                message: "User Does Not Exist"
+                message: "Error: 400 - User Does Not Exist"
             });
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch)
             return res.status(400).json({
-                message: "Incorrect Password!"
+                message: "Error: 400 - Incorrect Password!"
             });
 
         const payload = {
@@ -172,7 +173,7 @@ exports.login = async (req, res) => {
     } catch (e) {
         console.error(e);
         res.status(500).json({
-            message: "Server Error"
+            message: "Error: 500 - Server Error"
         });
     }
 }
@@ -193,33 +194,33 @@ exports.resetPassword = async (req, res) => {
         });
         if (!user)
             return res.status(400).json({
-                message: "User Does Not Exist"
+                message: "Error: 400 - User Does Not Exist"
             });
 
         if (!password)
             return res.status(400).json({
-                message: "No password entered, check client validation"
+                message: "Error: 400 - No password entered, check client validation"
             })
 
         if (!newPassword)
             return res.status(400).json({
-                message: "New password not entered, check client validation"
+                message: "Error: 400 - New password not entered, check client validation"
             })
 
         if (!confirmNewPassword)
             return res.status(400).json({
-                message: "Confirm password not entered, check client validation"
+                message: "Error: 400 - Confirm password not entered, check client validation"
             })
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch)
             return res.status(400).json({
-                message: "Incorrect Password!"
+                message: "Error: 400 - Incorrect Password!"
             });
 
         if (newPassword !== confirmNewPassword)
             return res.status(400).json({
-                message: "Passwords do not match"
+                message: "Error: 400 - Passwords do not match"
             })
 
         try {
@@ -254,14 +255,14 @@ exports.resetPassword = async (req, res) => {
         } catch (e) {
             console.error(e)
             res.status(500).json({
-                message: "Server Error"
+                message: "Error: 500 - Server Error"
             });
         }
 
     } catch (e) {
         console.error(e);
         res.status(500).json({
-            message: "Server Error"
+            message: "Error: 500 - Server Error"
         });
     }
 }
@@ -272,6 +273,6 @@ exports.me = async (req, res) => {
         const user = await User.findById(req.user.id);
         res.json(user);
     } catch (e) {
-        res.send({ message: "Error in Fetching user" });
+        res.status(500).json({ message: "Error: 500 - Error in Fetching user" });
     }
 }
