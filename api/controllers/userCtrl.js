@@ -106,7 +106,6 @@ exports.signup = async (req, res) => {
                 id: user.id
             }
         };
-        console.log('payload', payload)
         jwt.sign(
             payload,
             "secret",
@@ -223,41 +222,32 @@ exports.resetPassword = async (req, res) => {
                 message: "Error: 400 - Passwords do not match"
             })
 
-        try {
 
-            let updatedUser = await User.findOneAndUpdate({ username: user.username }, { password: newPassword }, { new: true })
-            console.log('updatedUser.password pre hash', updatedUser.password)
-            const salt = await bcrypt.genSalt(10);
-            updatedUser.password = await bcrypt.hash(updatedUser.password, salt);
+        let updatedUser = await User.findOneAndUpdate({ username: user.username }, { password: newPassword }, { new: true })
+        const salt = await bcrypt.genSalt(10);
+        updatedUser.password = await bcrypt.hash(updatedUser.password, salt);
 
-            console.log('updatedUser.password', updatedUser.password)
-            await updatedUser.save();
+        await updatedUser.save();
 
-            const payload = {
-                user: {
-                    id: updatedUser.id
-                }
-            };
+        const payload = {
+            user: {
+                id: updatedUser.id
+            }
+        };
 
-            jwt.sign(
-                payload,
-                "secret",
-                {
-                    expiresIn: 3600
-                },
-                (err, token) => {
-                    if (err) throw err;
-                    res.status(200).json({
-                        token
-                    });
-                }
-            );
-        } catch (e) {
-            console.error(e)
-            res.status(500).json({
-                message: "Error: 500 - Server Error"
-            });
-        }
+        jwt.sign(
+            payload,
+            "secret",
+            {
+                expiresIn: 3600
+            },
+            (err, token) => {
+                if (err) throw err;
+                res.status(200).json({
+                    token
+                });
+            }
+        );
 
     } catch (e) {
         console.error(e);
