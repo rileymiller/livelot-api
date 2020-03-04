@@ -16,8 +16,16 @@ exports.getAllLots = (req, res) => {
   });
 };
 
+exports.deleteAllLots = (req, res) => {
+  Lot.remove({}, (err, user) => {
+    if (err)
+      res.send(err);
+    res.json({ message: 'Deleted all lots' });
+  });
+};
+
 exports.createLot = (req, res) => {
-  var newLot = new Lot(req.body);
+  var newLot = new Lot({ ...req.body, lastUpdated: Date() });
   newLot.save((err, lot) => {
     if (err) res.send(err);
     res.json(lot);
@@ -34,7 +42,7 @@ exports.getLot = (req, res) => {
 exports.updateLot = (req, res) => {
   Lot.findOneAndUpdate(
     { _id: req.params.lotId },
-    req.body,
+    { ...req.body, lastUpdated: Date() },
     { new: true },
     function (err, lot) {
       if (err) res.send(err);
@@ -65,7 +73,7 @@ exports.carOut = (req, res) => {
     // update the number of spots in the lot
     Lot.findOneAndUpdate(
       { _id: req.params.lotId },
-      req.body,
+      { ...req.body, lastUpdated: Date() },
       { new: true },
       (err, lot) => {
         if (err) res.send(err);
@@ -101,7 +109,7 @@ exports.carIn = (req, res) => {
     // update the number of spots in the lot
     Lot.findOneAndUpdate(
       { _id: req.params.lotId },
-      req.body,
+      { ...req.body, lastUpdated: Date() },
       { new: true },
       (err, lot) => {
         if (err) res.send(err);

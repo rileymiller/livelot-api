@@ -27,7 +27,11 @@ var LotSchema = new Schema({
   lotStatus: {
     type: Boolean,
     required: true
-  }
+  },
+  lastUpdated: {
+    type: Date,
+    required: true
+  },
 });
 
 module.exports = mongoose.model("Lot", LotSchema);

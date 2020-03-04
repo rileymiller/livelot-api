@@ -50,7 +50,8 @@ module.exports = (app) => {
   app
     .route("/lot")
     .get(lot.getAllLots)
-    .post(lot.createLot);
+    .post(lot.createLot)
+    .delete(lot.deleteAllLots);
 
   app
     .route("/lot/:lotId")
