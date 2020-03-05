@@ -26,7 +26,7 @@ mongoose.connect(
   (err, Database) => {
     io.on("connection", (socket) => {
 
-      console.log('client connected')
+      console.log('client connected', socket)
       socket.on('disconnect', (reason) => {
         // ...
         console.log('client diconnected, reason: ', reason)
