@@ -11,7 +11,7 @@ var app = require('express')(),
   mongoose = require("mongoose"),
   User = require("./api/models/userModel"), //created User model loading here
   Lot = require("./api/models/lotModel"), //created Lot model loading here
-  LotIP = require("./api/models/lotIPAddressModel"),
+  LotIP = require("./api/models/cameraModel"),
   LotLog = require("./api/models/lotLogModel"), // create LotLog model loading here
   LotFunctions = require("./api/controllers/lotCtrl"),
   Feedback = require("./api/models/feedbackModel"), //created Feedback model loading here
@@ -24,7 +24,18 @@ mongoose.Promise = global.Promise;
 mongoose.connect(
   process.env.MONGODB_URI || "mongodb://mongo:27017/LiveLotAPI",
   (err, Database) => {
-    io.on("connection", (socket) => { });
+    io.on("connection", (socket) => {
+
+      console.log('client connected')
+      socket.on('disconnect', (reason) => {
+        // ...
+        console.log('client diconnected, reason: ', reason)
+      });
+
+      socket.on('camera-connection', (payload) => {
+        console.log(payload)
+      })
+    });
   }
 ).then(() => console.log('MongoDB connected!'));
 

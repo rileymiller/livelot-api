@@ -10,7 +10,7 @@ module.exports = (app) => {
   var lot = require("../controllers/lotCtrl");
   var feedback = require("../controllers/feedbackCtrl");
   var log = require("../controllers/lotLogCtrl");
-  var lotIP = require("../controllers/lotIPCtrl");
+  var lotIP = require("../controllers/cameraCtrl");
   var auth = require("../middleware/auth");
 
   // user Routes
