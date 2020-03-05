@@ -33,7 +33,7 @@ mongoose.connect(
       });
 
       socket.on('camera-connection', (payload) => {
-        console.log(payload)
+        console.log('received camera-connection', payload)
       })
     });
   }
