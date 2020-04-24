@@ -5,63 +5,62 @@
 "use strict";
 
 var mongoose = require("mongoose"),
-  Lot = mongoose.model("Lot"),
-  LotIP = mongoose.model("LotIP")
+  Camera = mongoose.model("Camera")
 
 
-exports.getAllLotIPs = (req, res) => {
-  LotIP.find({}, (err, log) => {
-    if (err) res.send(err);
-    res.json(log);
-  });
+/**
+ * GET
+ * 
+ * Fetches all cameras
+ */
+exports.getAllCameras = async (req, res) => {
+  try {
+    const allCameras = await Camera.find({})
+
+    res.status(200).json(allCameras);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+
 };
 
-exports.logLotIPAddress = (req, res) => {
-  const { lotId, lotName } = req.body
+/**
+ * GET
+ * 
+ * Fetches a single camera when passed the cameraID in a 
+ * GET request
+ */
+exports.getCamera = async (req, res) => {
+  console.log(req.params)
+  const { cameraID } = req.params
+  console.log(`cameraID:`, cameraID)
+  try {
+    const camera = await Camera.findOne({ cameraID: cameraID })
 
-  Lot.findById(lotId, (err, lot) => {
-    if (err) res.status(400).json({
-      msg: "Lot doesn't exist"
-    })
-
-    LotIP.find({ "lotName": lotName }, (err, lotIPEntry) => {
-      if (err) res.send(err)
-
-      if (lotIPEntry.length === 1) {
-        LotIP.findOneAndUpdate({
-          _id: lotIPEntry[0]._id
-        },
-          req.body,
-          { new: true },
-          (err, updatedIPEntry) => {
-            if (err) res.send(err)
-            res.send(updatedIPEntry)
-          }
-        )
-      } else {
-        var lotIP = new LotIP(req.body);
-        lotIP.save((err, lotIP) => {
-          if (err) res.send(err);
-          res.json(lotIP);
-        });
-      }
-    })
-  })
+    if (camera) {
+      console.log(`found camera`, camera)
+      res.status(200).json({
+        camera
+      })
+    } else {
+      res.status(404).send(`camera was not found`)
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(500).send(`Server error`)
+  }
 }
 
-exports.getLotIPForLot = (req, res) => {
-  Lot.findById(req.params.lotId, (err, lot) => {
-    if (err) res.send(err);
-    LotIP.find({ "lotId": lot._id }, (err, lotIP) => {
-      if (err) res.send(err);
-      res.json(lotIP)
-    })
-  });
-};
-
-exports.deleteAllLotIPs = (req, res) => {
-  LotIP.remove({}, (err, lot) => {
-    if (err) res.send(err);
-    res.json({ message: "Successfully deleted all lot IP address entries" });
-  })
+/**
+ * DELETE
+ * 
+ * Deletes all cameras in collection
+ */
+exports.deleteAllCameras = async (req, res) => {
+  try {
+    await Camera.remove({})
+    res.status(200).json({ message: "Successfully deleted all camera entries" });
+  } catch (err) {
+    res.status(500).send(err);
+  }
 }

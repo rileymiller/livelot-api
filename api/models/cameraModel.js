@@ -7,23 +7,27 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var LotIPSchema = new Schema({
+var CameraSchema = new Schema({
   lotName: {
     type: String,
     required: true
   },
-  lotId: {
+  cameraID: {
     type: String,
     required: true
   },
-  IPv4: {
+  ipv4: {
     type: String,
     required: true
   },
-  IPv6: {
+  ipv6: {
     type: String,
     required: true
   },
+  online: {
+    type: Boolean,
+    required: true
+  }
 })
 
-module.exports = mongoose.model("LotIP", LotIPSchema);
+module.exports = mongoose.model("Camera", CameraSchema);

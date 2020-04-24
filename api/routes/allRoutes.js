@@ -10,7 +10,7 @@ module.exports = (app) => {
   var lot = require("../controllers/lotCtrl");
   var feedback = require("../controllers/feedbackCtrl");
   var log = require("../controllers/lotLogCtrl");
-  var lotIP = require("../controllers/cameraCtrl");
+  var camera = require("../controllers/cameraCtrl");
   var auth = require("../middleware/auth");
 
   // user Routes
@@ -60,14 +60,13 @@ module.exports = (app) => {
     .delete(lot.deleteLot);
 
   app
-    .route("/lotIP")
-    .get(lotIP.getAllLotIPs)
-    .delete(lotIP.deleteAllLotIPs)
-    .post(lotIP.logLotIPAddress)
+    .route("/cameras")
+    .get(camera.getAllCameras)
+    .delete(camera.deleteAllCameras)
 
   app
-    .route("/lotIP/:lotId")
-    .get(lotIP.getLotIPForLot)
+    .route("/camera/:cameraID")
+    .get(camera.getCamera)
 
   // log route(s)
   app
