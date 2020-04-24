@@ -38,12 +38,11 @@ exports.getCamera = async (req, res) => {
     const camera = await Camera.findOne({ cameraID: cameraID })
 
     if (camera) {
-      console.log(`found camera`, camera)
       res.status(200).json({
         camera
       })
     } else {
-      res.status(404).send(`camera was not found`)
+      res.status(404).send(`Camera was not found`)
     }
   } catch (e) {
     console.log(e)

@@ -23,10 +23,9 @@ global.io = io; // so we can emit data via the socket in any controller
 mongoose.Promise = global.Promise;
 
 /**
- * This map maps from the socket id (socket.id) from the socket.io class
- * and is used to keep track of which socket maps to which camera. This 
- * will allow us to toggle the camera as no longer being online when the
- * camera is disconnected
+ * This map maps the socket id to the camera id for each connected node. This 
+ * will allow us to toggle the Camera to be online when a node connects and toggle
+ * it to be offline when a Camera disconnects from the server.
  */
 let socketMap = new Map()
 
@@ -45,7 +44,7 @@ mongoose.connect(
        */
       socket.on(`disconnect`, async (reason) => {
 
-        console.log(`disconnected socket:`, socket.id)
+        console.log(`disconnected socket#:`, socket.id)
 
         const cameraID = socketMap.get(socket.id)
 
@@ -55,9 +54,9 @@ mongoose.connect(
         try {
           const updatedCamera = await Camera.findOneAndUpdate({ cameraID: cameraID }, { online: false }, { new: true })
 
-          console.log(`Status of camera after updating`, updatedCamera)
+          console.log(`Disconnected Camera updated`, updatedCamera)
         } catch (err) {
-          console.log(`Error updating the camera status`, err)
+          console.log(`Error updating the disconnected camera's status`, err)
         }
       });
 
@@ -65,21 +64,20 @@ mongoose.connect(
        * This message is received whenever a node emits a `camera-connection` message
        */
       socket.on(`camera-connection`, async (payload) => {
-
-        console.log(`received camera-connection`, payload)
+        console.log(`Camera trying to connect`)
 
         try {
           const connectedCamera = await Camera.findOneAndUpdate({ cameraID: payload.cameraID }, payload, { new: true, upsert: true })
 
-          console.log(`logged camera`, connectedCamera)
+          console.log(`Camera successfully connected`, connectedCamera)
 
-          socket.emit(`camera-update-success`, { msg: `Camera was successfully added`, camera: connectedCamera })
+          socket.emit(`camera-update-success`, { msg: `Camera was added successfully`, camera: connectedCamera })
 
           socketMap.set(socket.id, connectedCamera.cameraID)
         } catch (err) {
-          console.log(`Failed to update camera, error:`, err)
+          console.log(`Camera failed to connect, error:`, err)
 
-          socket.emit(`camera-update-fail`, { msg: `Failed to update the camera`, error: err })
+          socket.emit(`camera-update-fail`, { msg: `Camera failed to connect`, error: err })
         }
       })
     });
