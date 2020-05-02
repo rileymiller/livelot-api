@@ -1,13 +1,22 @@
 /*
- *   lotModel.js
+ *   lotModel.ts
  *   This file creates the database schema for a 'lot' object
  *   Attributes can be added to the 'lot' schema as needed
  */
-"use strict";
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+import mongoose from 'mongoose'
+import { Schema, model } from 'mongoose'
 
-var LotSchema = new Schema({
+export type Lot = {
+  lotName: string,
+  numSpots: number,
+  totalSpots: number,
+  lotAddress: string,
+  lotStatus: string,
+  lastUpdated: Date
+} & mongoose.Document
+
+
+const LotSchema = new Schema({
   lotName: {
     type: String,
     required: true
@@ -31,7 +40,7 @@ var LotSchema = new Schema({
   lastUpdated: {
     type: Date,
     required: true
-  },
+  }
 });
 
-module.exports = mongoose.model("Lot", LotSchema);
+export default model<Lot>(`Lot`, LotSchema);

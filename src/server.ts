@@ -17,7 +17,8 @@ var app = require('express')(),
   Feedback = require("./api/models/feedbackModel"), //created Feedback model loading here
   bodyParser = require("body-parser");
 
-global.io = io; // so we can emit data via the socket in any controller
+// so we can emit data via the socket in any controller
+global.io = io;
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
