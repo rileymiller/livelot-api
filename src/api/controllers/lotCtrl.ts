@@ -2,8 +2,7 @@
  *   lotCtrl.ts
  *   This file creates is the controller file to get information from the lot database
  */
-import { Request, Response, NextFunction, response } from 'express';
-import mongoose from 'mongoose';
+import { Request, Response } from 'express';
 import { Lot as model, LotType } from '../models/lotModel';
 
 import { LotLog } from '../models/lotLogModel'
