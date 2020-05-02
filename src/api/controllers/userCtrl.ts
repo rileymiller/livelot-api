@@ -2,11 +2,13 @@
 *   userCtrl.ts
 *   This file creates is the controller file to get information from the user database
 */
+
+import mongoose from 'mongoose'
 import { User as model } from '../models/userModel'
 import { Request, Response } from 'express'
 
 
-import { validationResult } from 'express-validator'
+import { check, validationResult } from 'express-validator'
 
 import bcrypt from 'bcryptjs'
 
@@ -263,5 +265,16 @@ export const resetPassword = async (req: Request, res: Response) => {
         res.status(500).json({
             message: "Error: 500 - Server Error"
         });
+    }
+}
+
+export const me = async (req: Request, res: Response) => {
+    try {
+        // request.user is getting fetched from Middleware after token authentication
+        // const user = await model.findById(req.user.id); this is the old implementation in case this breaks!!
+        const user = await model.findById(req.headers[`user`])
+        res.json(user);
+    } catch (e) {
+        res.status(500).json({ message: "Error: 500 - Error in Fetching user" });
     }
 }
