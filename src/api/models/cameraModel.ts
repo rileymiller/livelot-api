@@ -1,13 +1,19 @@
 /*
- *   cameraModel.js
+ *   cameraModel.ts
  *   This file creates the database schema for a 'Camera' object
  *   Attributes can be added to the 'Camera' schema as needed
  */
-"use strict";
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+import mongoose from 'mongoose'
+import { Schema, model } from 'mongoose'
+import { LotType } from './lotModel'
+type CameraType = {
+  cameraID: string
+  ipv4: string
+  ipv6: string
+  online: boolean
+} & Pick<LotType, 'lotName'> & mongoose.Document
 
-var CameraSchema = new Schema({
+const CameraSchema = new Schema({
   lotName: {
     type: String,
     required: true
@@ -30,4 +36,4 @@ var CameraSchema = new Schema({
   }
 })
 
-module.exports = mongoose.model("Camera", CameraSchema);
+export const Camera = model<CameraType>(`Camera`, CameraSchema);

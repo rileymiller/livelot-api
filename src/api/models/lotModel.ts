@@ -6,7 +6,7 @@
 import mongoose from 'mongoose'
 import { Schema, model } from 'mongoose'
 
-export type Lot = {
+export type LotType = {
   lotName: string,
   numSpots: number,
   totalSpots: number,
@@ -43,4 +43,4 @@ const LotSchema = new Schema({
   }
 });
 
-export default model<Lot>(`Lot`, LotSchema);
+export const Lot = model<LotType>(`Lot`, LotSchema);

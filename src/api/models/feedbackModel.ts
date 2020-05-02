@@ -1,12 +1,19 @@
 /*
-*   feedbackModel.js
+*   feedbackModel.ts
 *   This file creates the database schema for a 'feedback' object
 *   Attributes can be added to the 'feedback' schema as needed
 */
-'use strict';
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+import mongoose from 'mongoose'
+import { Schema, model } from 'mongoose'
 
+export type FeedbackType = {
+    date: Date,
+    user: string,
+    email: string,
+    type: string,
+    location: string,
+    feedback: string
+} & mongoose.Document
 
 var FeedbackSchema = new Schema({
     date: {
@@ -33,4 +40,4 @@ var FeedbackSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Feedback', FeedbackSchema);
+export const Feedback = model<FeedbackType>('Feedback', FeedbackSchema)

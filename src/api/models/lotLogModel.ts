@@ -1,11 +1,19 @@
 /*
- *   lotLogModel.js
+ *   lotLogModel.ts
  *   This file creates the database schema for a 'log' object
  *   Attributes can be added to the 'log' schema as needed
  */
-"use strict";
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+import mongoose from 'mongoose'
+import { Schema, model, Model } from 'mongoose'
+
+import { Lot, LotType } from './lotModel'
+
+export type LotLogType = {
+  lotId: string
+  totalSpots: number
+  time: Date
+  didCarEnter: Boolean
+} & Pick<LotType, 'lotName' | 'numSpots' | 'totalSpots'> & mongoose.Document
 
 var LotLogSchema = new Schema({
   lotName: {
@@ -34,4 +42,4 @@ var LotLogSchema = new Schema({
   }
 })
 
-module.exports = mongoose.model("LotLog", LotLogSchema);
+export const LotLog = model<LotLogType>("LotLog", LotLogSchema);
