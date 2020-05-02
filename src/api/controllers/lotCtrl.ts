@@ -26,9 +26,12 @@ export const deleteAllLots = async (req: Request, res: Response) => {
 };
 
 export const createLot = async (req: Request, res: Response) => {
-  var newLot = new model({ ...req.body, lastUpdated: Date() });
+  console.log('in createLot');
   try {
+    var newLot = new model({ ...req.body, lastUpdated: Date() });
+    console.log('before save');
     const savedLot = await newLot.save();
+    console.log(savedLot);
     res.json(savedLot);
   } catch (error) {
     res.send(error);

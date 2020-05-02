@@ -4,89 +4,124 @@
  *   Initially this file just has routes for the 'user' object, 'lot' object, and 'feedback' object, but all the routes for the application
  *   will eventually be written in here once the schemas and controllers are created.
  */
-module.exports = (app) => {
-  var user = require("../controllers/userCtrl");
-  var lot = require("../controllers/lotCtrl");
-  var feedback = require("../controllers/feedbackCtrl");
-  var log = require("../controllers/lotLogCtrl");
-  var camera = require("../controllers/cameraCtrl");
-  var auth = require("../middleware/auth");
+import {
+  getAllUsers,
+  createUser,
+  deleteAllUsers,
+  me,
+  getUser,
+  updateUser,
+  deleteUser,
+  signup,
+  login,
+  resetPassword
+} from "../controllers/userCtrl";
+import {
+  getAllLots,
+  createLot,
+  deleteAllLots,
+  getLot,
+  updateLot,
+  deleteLot,
+  carIn,
+  carOut
+} from "../controllers/lotCtrl";
+import {
+  getAllFeedback,
+  createFeedback
+} from "../controllers/feedbackCtrl";
+import {
+  getAllLogs,
+  deleteAllLogs,
+  getLogsForLot,
+  getLogsForLots
+} from "../controllers/lotLogCtrl";
+import {
+  getAllCameras,
+  deleteAllCameras,
+  getCamera
+} from "../controllers/cameraCtrl";
+import auth from "../middleware/auth";
 
+import { Application } from 'express'
+
+export const routes = (app: Application) => {
+  console.log('in routes');
   // user Routes
   app
     .route("/user")
-    .get(user.getAllUsers)
-    .post(user.createUser)
-    .delete(user.deleteAllUsers);
+    .get(getAllUsers)
+    .post(createUser)
+    .delete(deleteAllUsers);
 
   // This route is called after a token is grabbed from the login/ route
   app
     .route("/user/me")
-    .get(auth, user.me)
+    .get(auth, me)
 
 
   app
     .route("/user/:userId")
-    .get(user.getUser)
-    .put(user.updateUser)
-    .delete(user.deleteUser);
+    .get(getUser)
+    .put(updateUser)
+    .delete(deleteUser);
 
   // Route used to signup a user
   app
     .route("/signup")
-    .post(user.signup)
+    .post(signup)
 
   // Route used to login a user
   app
     .route('/login')
-    .post(user.login)
+    .post(login)
 
   app
     .route('/resetPassword')
-    .post(user.resetPassword)
+    .post(resetPassword)
 
 
   // lot Routes
   app
     .route("/lot")
-    .get(lot.getAllLots)
-    .post(lot.createLot)
-    .delete(lot.deleteAllLots);
+    .get(getAllLots)
+    .post(createLot)
+    .delete(deleteAllLots);
 
   app
     .route("/lot/:lotId")
-    .get(lot.getLot)
-    .put(lot.updateLot)
-    .delete(lot.deleteLot);
+    .get(getLot)
+    .put(updateLot)
+    .delete(deleteLot);
 
   app
     .route("/cameras")
-    .get(camera.getAllCameras)
-    .delete(camera.deleteAllCameras)
+    .get(getAllCameras)
+    .delete(deleteAllCameras)
 
   app
     .route("/camera/:cameraID")
-    .get(camera.getCamera)
+    .get(getCamera)
 
   // log route(s)
   app
     .route("/log")
-    .get(log.getAllLogs)
-    .delete(log.deleteAllLogs)
-    .post(log.getLogsForLots)
+    .get(getAllLogs)
+    .delete(deleteAllLogs)
+    .post(getLogsForLots)
 
   // get log for route
   app
     .route("/log/:lotId")
-    .get(log.getLogsForLot)
+    .get(getLogsForLot)
 
   // increment and decrement lots by ID
-  app.route("/lot/:lotId/carOut").put(lot.carOut);
-  app.route("/lot/:lotId/carIn").put(lot.carIn);
+  app.route("/lot/:lotId/carOut").put(carOut);
+  app.route("/lot/:lotId/carIn").put(carIn);
 
   // feedback Routes
   app
     .route("/feedback")
-    .get(feedback.getAllFeedback)
-    .post(feedback.createFeedback);
+    .get(getAllFeedback)
+    .post(createFeedback);
 };

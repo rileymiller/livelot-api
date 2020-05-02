@@ -35,7 +35,8 @@ let socketMap = new Map()
  * wrapper for our Socket.io web sockets for field node connections
  */
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://mongo:27017/LiveLotAPI",
+  process.env.MONGODB_URI || 
+  "mongodb://mongo:27017/LiveLotAPI",
   (err, Database) => {
     io.on(`connection`, (socket) => {
       console.log(`client connected: `, socket.id)
@@ -88,7 +89,7 @@ mongoose.connect(
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var routes = require("./api/routes/allRoutes"); //importing route
+var { routes } = require("./api/routes/allRoutes"); //importing route
 routes(app); //register the route
 
 http.listen(port);
