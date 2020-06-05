@@ -26,10 +26,8 @@ export const deleteAllLots = async (req: Request, res: Response) => {
 };
 
 export const createLot = async (req: Request, res: Response) => {
-  console.log('in createLot');
   try {
     var newLot = new model({ ...req.body, lastUpdated: Date() });
-    console.log('before save');
     const savedLot = await newLot.save();
     console.log(savedLot);
     res.json(savedLot);
@@ -91,7 +89,7 @@ export const carOut = async (req: Request, res: Response) => {
     const lotToUpdate = await model.findById(req.params.lotId)
 
     // increment the number of spots
-    req.body.numSpots = lotToUpdate.numSpots += 1
+    req.body.numSpots = lotToUpdate.numSpots -= 1
 
     try {
       // update the number of spots in the lot

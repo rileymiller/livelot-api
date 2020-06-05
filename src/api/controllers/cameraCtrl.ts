@@ -3,7 +3,7 @@
  *   This file creates is the controller file to get information from the lotLog database
  */
 import { Request, Response } from 'express';
-import { Camera as model} from '../models/cameraModel'
+import { Camera as model } from '../models/cameraModel'
 
 
 /**
@@ -29,22 +29,39 @@ export const getAllCameras = async (req: Request, res: Response) => {
  * GET request
  */
 export const getCamera = async (req: Request, res: Response) => {
-  console.log(req.params)
   const { cameraID } = req.params
   console.log(`cameraID:`, cameraID)
   try {
     const camera = await model.findOne({ cameraID: cameraID })
-
+    console.log(`CAMERA:`, camera)
     if (camera) {
-      res.status(200).json({
+      res.status(200).json(
         camera
-      })
+      )
     } else {
       res.status(404).send(`Camera was not found`)
     }
   } catch (e) {
     console.log(e)
     res.status(500).send(`Server error`)
+  }
+}
+
+/**
+ * POST
+ * 
+ * Creates a camera entry
+ * @param req 
+ * @param res 
+ */
+export const createCamera = async (req: Request, res: Response) => {
+  try {
+    var newCamera = new model({ ...req.body });
+    const savedCamera = await newCamera.save();
+    console.log(savedCamera);
+    res.json(savedCamera);
+  } catch (error) {
+    res.status(400).send(error);
   }
 }
 
