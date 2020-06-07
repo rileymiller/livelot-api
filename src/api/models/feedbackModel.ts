@@ -12,7 +12,8 @@ export type FeedbackType = {
     email: string,
     type: string,
     location: string,
-    feedback: string
+    feedback: string,
+    source: string
 } & mongoose.Document
 
 var FeedbackSchema = new Schema({
@@ -37,6 +38,9 @@ var FeedbackSchema = new Schema({
     feedback: {
         type: String,
         required: true
+    },
+    source: {
+        type: String,
     }
 });
 
