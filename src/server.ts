@@ -99,3 +99,5 @@ routes(app); //register the route
 http.listen(port);
 
 console.log("LiveLot RESTful API server started on: " + port);
+
+export { app };
