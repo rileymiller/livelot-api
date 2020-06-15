@@ -62,21 +62,6 @@ origin	https://github.com/maddiearogers/LiveLotAppAPI (fetch)
 origin	https://github.com/maddiearogers/LiveLotAppAPI (push)
 ```
 
-## Folder Structure
-    /LiveLotAppAPI
-        /api
-            /controllers
-                lotCtrl.js 
-                userCtrl.js
-            /models
-                lotModel.js
-                userModel.js
-            /routes
-                allRoutes.js
-        package.json
-        server.js
-        README.md
-
 ## Endpoints
     /lot
         getAllLots - GET
@@ -92,6 +77,10 @@ origin	https://github.com/maddiearogers/LiveLotAppAPI (push)
     /cameras
         getAllCameras - GET
         deleteAllCameras - DELETE
+    
+    /camera
+        createCamera - POST
+            - pass a body with a 'camera' object
 
     /camera/:cameraID
         getCamera - GET

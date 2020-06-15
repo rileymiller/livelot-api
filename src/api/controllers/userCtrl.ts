@@ -1,70 +1,81 @@
 /*
-*   userCtrl.js
+*   userCtrl.ts
 *   This file creates is the controller file to get information from the user database
 */
-'use strict';
+
+import mongoose from 'mongoose'
+import { User as model } from '../models/userModel'
+import { Request, Response } from 'express'
 
 
-var mongoose = require('mongoose'),
-    User = mongoose.model('User');
+import { check, validationResult } from 'express-validator'
 
-const express = require("express");
-const { check, validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import bcrypt from 'bcryptjs'
 
-exports.getAllUsers = (req, res) => {
-    User.find({}, (err, user) => {
-        if (err)
-            res.send(err);
+import jwt from 'jsonwebtoken'
+
+export const getAllUsers = async (_: Request, res: Response) => {
+    try {
+        const user = await model.remove({})
+        res.json(user)
+    } catch (error) {
+        res.send(error)
+    }
+};
+
+export const deleteAllUsers = async (_: Request, res: Response) => {
+
+    try {
+        await model.remove({})
+        res.status(200).json({ message: 'Deleted all users' });
+    } catch (error) {
+        res.status(500).send(error)
+    }
+};
+
+export const createUser = async (req: Request, res: Response) => {
+    try {
+        const newUser = await new model(req.body);
+
+        await newUser.save()
+        res.json(newUser);
+    } catch (error) {
+        res.send(error);
+    }
+};
+
+export const getUser = async (req: Request, res: Response) => {
+    try {
+        const user = model.findById(req.params.userId)
         res.json(user);
-    });
+    } catch (error) {
+        res.send(error);
+    }
 };
 
-exports.deleteAllUsers = (req, res) => {
-    User.remove({}, (err, user) => {
-        if (err)
-            res.send(err);
-        res.json({ message: 'Deleted all users' });
-    });
-};
+export const updateUser = async (req: Request, res: Response) => {
+    try {
+        const user = await model.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true })
 
-exports.createUser = (req, res) => {
-    var newUser = new User(req.body);
-    newUser.save((err, user) => {
-        if (err)
-            res.send(err);
         res.json(user);
-    });
+    } catch (error) {
+        res.send(error);
+    }
 };
 
-exports.getUser = (req, res) => {
-    User.findById(req.params.userId, (err, user) => {
-        if (err)
-            res.send(err);
-        res.json(user);
-    });
-};
+export const deleteUser = async (req: Request, res: Response) => {
+    try {
+        await model.remove({
+            _id: req.params.userId
+        })
 
-exports.updateUser = (req, res) => {
-    User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, (err, user) => {
-        if (err)
-            res.send(err);
-        res.json(user);
-    });
-};
-
-exports.deleteUser = (req, res) => {
-    User.remove({
-        _id: req.params.userId
-    }, (err, user) => {
-        if (err)
-            res.send(err);
         res.json({ message: 'OK: 200 User successfully deleted' });
-    });
+    } catch (error) {
+        res.send(error);
+    }
 };
 
-exports.signup = async (req, res) => {
+export const signup = async (req: Request, res: Response) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -80,7 +91,7 @@ exports.signup = async (req, res) => {
     } = req.body;
     try {
 
-        let user = await User.findOne({
+        let user = await model.findOne({
             email
         });
 
@@ -90,7 +101,7 @@ exports.signup = async (req, res) => {
             });
         }
 
-        user = new User({
+        user = new model({
             username,
             email,
             password
@@ -125,7 +136,7 @@ exports.signup = async (req, res) => {
     }
 }
 
-exports.login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -136,7 +147,7 @@ exports.login = async (req, res) => {
 
     const { email, password } = req.body;
     try {
-        let user = await User.findOne({
+        let user = await model.findOne({
             email
         });
         if (!user)
@@ -177,7 +188,7 @@ exports.login = async (req, res) => {
     }
 }
 
-exports.resetPassword = async (req, res) => {
+export const resetPassword = async (req: Request, res: Response) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -188,7 +199,7 @@ exports.resetPassword = async (req, res) => {
 
     const { email, password, newPassword, confirmNewPassword } = req.body;
     try {
-        let user = await User.findOne({
+        let user = await model.findOne({
             email
         });
         if (!user)
@@ -223,7 +234,7 @@ exports.resetPassword = async (req, res) => {
             })
 
 
-        let updatedUser = await User.findOneAndUpdate({ username: user.username }, { password: newPassword }, { new: true })
+        let updatedUser = await model.findOneAndUpdate({ username: user.username }, { password: newPassword }, { new: true })
         const salt = await bcrypt.genSalt(10);
         updatedUser.password = await bcrypt.hash(updatedUser.password, salt);
 
@@ -257,10 +268,11 @@ exports.resetPassword = async (req, res) => {
     }
 }
 
-exports.me = async (req, res) => {
+export const me = async (req: Request, res: Response) => {
     try {
         // request.user is getting fetched from Middleware after token authentication
-        const user = await User.findById(req.user.id);
+        // const user = await model.findById(req.user.id); this is the old implementation in case this breaks!!
+        const user = await model.findById(req.headers[`user`])
         res.json(user);
     } catch (e) {
         res.status(500).json({ message: "Error: 500 - Error in Fetching user" });

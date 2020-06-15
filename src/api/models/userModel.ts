@@ -1,14 +1,21 @@
 /*
-*   userModel.js
+*   userModel.ts
 *   This file creates the database schema for a 'user' object
 *   Attributes can be added to the 'user' schema as needed
 */
-'use strict';
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+import mongoose from 'mongoose'
+import { Schema, model } from 'mongoose'
 
+export type UserType = {
+    username: string,
+    password: string,
+    fullName: string,
+    email: string,
+    phoneNumber: string,
+    createDate: Date
+} & mongoose.Document
 
-var UserSchema = new Schema({
+const UserSchema = new Schema({
     username: {
         type: String,
         required: true
@@ -33,4 +40,4 @@ var UserSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('User', UserSchema);
+export const User = model<UserType>('User', UserSchema);

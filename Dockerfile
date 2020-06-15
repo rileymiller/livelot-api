@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . /usr/src/app
+RUN npm build
 
 # Expose port and start application
 EXPOSE 3000
