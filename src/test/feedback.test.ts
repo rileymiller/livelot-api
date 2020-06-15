@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { app } from '../server';
 import {agent as request} from 'supertest';
 
-let mockFeedback = {
+const mockFeedback = {
     user: "maddie",
     email: "maddierogers20@gmail.com",
     type: "test",
@@ -12,17 +12,14 @@ let mockFeedback = {
 }
 
 describe("Feedback Tests: ", () => {
-    it('should POST /feedback', async function () {
+    it('should POST /feedback', async () => {
         const response = await request(app).post('/feedback').send(mockFeedback);
         expect(response.status).to.equal(200);
         expect(response.body).not.to.be.empty;
         expect(response.body).to.be.an("object");
-
-        // set mockFeedback to equal response.body for the next test
-        mockFeedback = response.body;
     });
 
-    it('should GET ALL /feedback', async function () {
+    it('should GET ALL /feedback', async () => {
         const response = await request(app).get('/feedback');
         expect(response.status).to.equal(200);
         expect(response.body).not.to.be.empty;
