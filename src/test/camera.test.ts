@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { app } from '../server';
 import {agent as request} from 'supertest';
+import { Camera } from '../api/models/cameraModel'
 
 let mockCamera = {
     lotName: "test lot",
@@ -11,6 +12,17 @@ let mockCamera = {
 }
 
 let mockID = 0;
+
+// clear out the db before all the test and after tests are complete
+before(async () => {
+    // delete everything in feedback collection
+    await Camera.deleteMany({});
+});
+
+after(async () => {
+    // delete everything in feedback collection
+    await Camera.deleteMany({});
+});
 
 describe("Camera Tests: ", () => {
     it('should POST /camera', async () => {

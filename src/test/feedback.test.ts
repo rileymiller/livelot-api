@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { app } from '../server';
 import {agent as request} from 'supertest';
+import { Feedback } from '../api/models/feedbackModel'
 
 const mockFeedback = {
     user: "maddie",
@@ -10,6 +11,17 @@ const mockFeedback = {
     feedback: "testing the feedback endpoint",
     source: "my laptop",
 }
+
+// clear out the db before all the test and after tests are complete
+before(async () => {
+    // delete everything in feedback collection
+    await Feedback.deleteMany({});
+});
+
+after(async () => {
+    // delete everything in feedback collection
+    await Feedback.deleteMany({});
+});
 
 describe("Feedback Tests: ", () => {
     it('should POST /feedback', async () => {
