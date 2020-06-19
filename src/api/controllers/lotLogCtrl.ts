@@ -16,6 +16,7 @@ export const getAllLogs = async (req: Request, res: Response) => {
   }
 };
 
+// THERE IS A BUG IN THIS
 export const getLogsForLot = async (req: Request, res: Response) => {
   try {
     const lot = await Lot.findById(req.params.lotId);

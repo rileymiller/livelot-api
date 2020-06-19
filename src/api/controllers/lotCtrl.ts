@@ -29,7 +29,6 @@ export const createLot = async (req: Request, res: Response) => {
   try {
     var newLot = new model({ ...req.body, lastUpdated: Date() });
     const savedLot = await newLot.save();
-    console.log(savedLot);
     res.json(savedLot);
   } catch (error) {
     res.send(error);
@@ -60,14 +59,14 @@ export const updateLot = async (req: Request, res: Response) => {
 
 export const deleteLot = async (req: Request, res: Response) => {
   try {
-    await model.remove({ _id: req.params.lotId });
-    res.json({ message: "Lot successfully deleted" });
+    await model.deleteOne({ _id: req.params.lotId });
+    res.json({ message: `Lot ${req.params.lotId} successfully deleted` });
   } catch (error) {
     res.send(error);
   }
 };
 
-export const logLotUpdate = (lot: LotType, didCarEnter: boolean, lotId: string) => {
+export const logLotUpdate = async (lot: LotType, didCarEnter: boolean, lotId: string) => {
   // log that a car left the lot
   const log = new LotLog({
     lotName: lot.lotName,
@@ -78,7 +77,7 @@ export const logLotUpdate = (lot: LotType, didCarEnter: boolean, lotId: string) 
     didCarEnter: didCarEnter
   });
 
-  log.save()
+  await log.save()
 }
 
 

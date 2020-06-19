@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { app } from '../server';
-import {agent as request} from 'supertest';
+import { agent as request } from 'supertest';
 import { Camera } from '../api/models/cameraModel'
 
 let mockCamera = {
@@ -25,7 +25,7 @@ after(async () => {
 });
 
 describe("Camera Tests: ", () => {
-    it('should POST /camera', async () => {
+    it('should POST /camera creating a new camera object', async () => {
         const response = await request(app).post('/camera').send(mockCamera);
         expect(response.status).to.equal(200);
         expect(response.body).not.to.be.empty;
@@ -35,21 +35,21 @@ describe("Camera Tests: ", () => {
         mockID = response.body._id;
     });
 
-    it('should GET ALL /cameras', async () => {
+    it('should GET ALL /cameras objects', async () => {
         const response = await request(app).get('/cameras');
         expect(response.status).to.equal(200);
         expect(response.body).not.to.be.empty;
         expect(response.body).to.be.an("array");
     });
 
-    it('should GET a /camera', async () => {
+    it('should GET a camera by id /camera/:cameraID', async () => {
         const response = await request(app).get('/camera/' + mockID);
         expect(response.status).to.equal(200);
         expect(response.body).not.to.be.empty;
         expect(response.body).to.be.an("object");
     });
 
-    it('should DELETE ALL /cameras', async () => {
+    it('should DELETE ALL /cameras from the db', async () => {
         const response = await request(app).delete('/cameras');
         expect(response.status).to.equal(200);
         expect(response.body).not.to.be.empty;

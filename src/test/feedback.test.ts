@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { app } from '../server';
-import {agent as request} from 'supertest';
+import { agent as request } from 'supertest';
 import { Feedback } from '../api/models/feedbackModel'
 
 const mockFeedback = {
@@ -24,14 +24,14 @@ after(async () => {
 });
 
 describe("Feedback Tests: ", () => {
-    it('should POST /feedback', async () => {
+    it('should POST /feedback and create a new feedback obj', async () => {
         const response = await request(app).post('/feedback').send(mockFeedback);
         expect(response.status).to.equal(200);
         expect(response.body).not.to.be.empty;
         expect(response.body).to.be.an("object");
     });
 
-    it('should GET ALL /feedback', async () => {
+    it('should GET ALL /feedback objects', async () => {
         const response = await request(app).get('/feedback');
         expect(response.status).to.equal(200);
         expect(response.body).not.to.be.empty;
