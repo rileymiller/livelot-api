@@ -15,6 +15,7 @@ import { LotLog } from "./api/models/lotLogModel" // create LotLog model loading
 import { Feedback } from "./api/models/feedbackModel" //created Feedback model loading here
 import * as Mongoose from 'mongoose'
 import { Camera } from './api/models/cameraModel'
+import { routes } from "./api/routes/allRoutes"
 
 import connect from './connect'
 
@@ -92,8 +93,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.set(`socketio`, io)
-// var { routes } = require("./api/routes/allRoutes"); //importing route
-import { routes } from "./api/routes/allRoutes"
+
 routes(app); //register the route
 
 http.listen(port);
