@@ -108,7 +108,9 @@ export const carOut = async (req: Request, res: Response) => {
 
 
       await logLotUpdate(updatedLot, false, req.params.lotId)
+      const io = req.app.get(`socketio`)
 
+      io.emit(`Car Out`, updatedLot)
       res.json(updatedLot)
     } catch (error) {
       // TODO: add correct status code
@@ -148,7 +150,9 @@ export const carIn = async (req: Request, res: Response) => {
 
 
       await logLotUpdate(updatedLot, true, req.params.lotId)
+      const io = req.app.get(`socketio`)
 
+      io.emit(`Car In`, updatedLot)
       res.json(updatedLot)
     } catch (error) {
       // TODO: add correct status code

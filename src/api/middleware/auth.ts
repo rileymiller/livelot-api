@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { decode } from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express'
 
 type JWTType = {
@@ -10,7 +10,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const decoded = <any>jwt.verify(token, "secret");
-    req.headers[`user`] = decoded.user;
+    req.headers[`user_id`] = decoded.user.id;
+
     next();
   } catch (e) {
     console.error(e);

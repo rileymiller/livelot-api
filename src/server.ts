@@ -91,7 +91,9 @@ io.on(`connection`, (socket: Socket) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var { routes } = require("./api/routes/allRoutes"); //importing route
+app.set(`socketio`, io)
+// var { routes } = require("./api/routes/allRoutes"); //importing route
+import { routes } from "./api/routes/allRoutes"
 routes(app); //register the route
 
 http.listen(port);

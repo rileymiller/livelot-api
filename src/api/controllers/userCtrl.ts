@@ -8,7 +8,7 @@ import { User as model } from '../models/userModel'
 import { Request, Response } from 'express'
 
 
-import { check, validationResult } from 'express-validator'
+import { validationResult } from 'express-validator'
 
 import bcrypt from 'bcryptjs'
 
@@ -16,7 +16,7 @@ import jwt from 'jsonwebtoken'
 
 export const getAllUsers = async (_: Request, res: Response) => {
     try {
-        const user = await model.remove({})
+        const user = await model.find({})
         res.json(user)
     } catch (error) {
         res.send(error)
@@ -69,7 +69,7 @@ export const deleteUser = async (req: Request, res: Response) => {
             _id: req.params.userId
         })
 
-        res.json({ message: 'OK: 200 User successfully deleted' });
+        res.json({ message: 'User successfully deleted' });
     } catch (error) {
         res.send(error);
     }
@@ -97,7 +97,7 @@ export const signup = async (req: Request, res: Response) => {
 
         if (user) {
             return res.status(400).json({
-                message: "Error: 400 - User Already Exists"
+                message: "User Already Exists"
             });
         }
 
@@ -132,7 +132,7 @@ export const signup = async (req: Request, res: Response) => {
         );
     } catch (err) {
         console.log(err.message);
-        res.status(500).send("Error: 500 - Error in Saving");
+        res.status(500).send("Error in Saving");
     }
 }
 
@@ -152,13 +152,13 @@ export const login = async (req: Request, res: Response) => {
         });
         if (!user)
             return res.status(400).json({
-                message: "Error: 400 - User Does Not Exist"
+                message: "User Does Not Exist"
             });
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch)
             return res.status(400).json({
-                message: "Error: 400 - Incorrect Password!"
+                message: "Incorrect Password!"
             });
 
         const payload = {
@@ -183,7 +183,7 @@ export const login = async (req: Request, res: Response) => {
     } catch (e) {
         console.error(e);
         res.status(500).json({
-            message: "Error: 500 - Server Error"
+            message: "Server Error"
         });
     }
 }
@@ -204,33 +204,33 @@ export const resetPassword = async (req: Request, res: Response) => {
         });
         if (!user)
             return res.status(400).json({
-                message: "Error: 400 - User Does Not Exist"
+                message: "User Does Not Exist"
             });
 
         if (!password)
             return res.status(400).json({
-                message: "Error: 400 - No password entered, check client validation"
+                message: "No password entered, check client validation"
             })
 
         if (!newPassword)
             return res.status(400).json({
-                message: "Error: 400 - New password not entered, check client validation"
+                message: "New password not entered, check client validation"
             })
 
         if (!confirmNewPassword)
             return res.status(400).json({
-                message: "Error: 400 - Confirm password not entered, check client validation"
+                message: "Confirm password not entered, check client validation"
             })
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch)
             return res.status(400).json({
-                message: "Error: 400 - Incorrect Password!"
+                message: "Incorrect Password!"
             });
 
         if (newPassword !== confirmNewPassword)
             return res.status(400).json({
-                message: "Error: 400 - Passwords do not match"
+                message: "Passwords do not match"
             })
 
 
@@ -263,18 +263,23 @@ export const resetPassword = async (req: Request, res: Response) => {
     } catch (e) {
         console.error(e);
         res.status(500).json({
-            message: "Error: 500 - Server Error"
+            message: "Server Error"
         });
     }
 }
 
+/**
+ * This is our authentication middleware for forwarding our response after
+ * authenticating the JWT.
+ * @param req 
+ * @param res 
+ */
 export const me = async (req: Request, res: Response) => {
     try {
         // request.user is getting fetched from Middleware after token authentication
-        // const user = await model.findById(req.user.id); this is the old implementation in case this breaks!!
-        const user = await model.findById(req.headers[`user`])
+        const user = await model.findById(req.headers[`user_id`])
         res.json(user);
     } catch (e) {
-        res.status(500).json({ message: "Error: 500 - Error in Fetching user" });
+        res.status(500).json({ message: "Error in Fetching user" });
     }
 }
