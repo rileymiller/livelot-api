@@ -2,10 +2,10 @@
  *   lotCtrl.ts
  *   This file creates is the controller file to get information from the lot database
  */
-import { Request, Response } from 'express';
-import { Lot as model, LotType } from '../models/lotModel';
+import { Request, Response } from "express";
+import { Lot as model, LotType } from "../models/lotModel";
 
-import { LotLog } from '../models/lotLogModel'
+import { LotLog } from "../models/lotLogModel";
 
 export const getAllLots = async (req: Request, res: Response) => {
   try {
@@ -19,15 +19,19 @@ export const getAllLots = async (req: Request, res: Response) => {
 export const deleteAllLots = async (req: Request, res: Response) => {
   try {
     await model.deleteMany({});
-    res.json({ message: 'Deleted all lots' });
+    res.json({ message: "Deleted all lots" });
   } catch (error) {
     res.send(error);
   }
 };
 
 export const createLot = async (req: Request, res: Response) => {
+  const localDate = new Date().toLocaleString("en-US");
   try {
-    var newLot = new model({ ...req.body, lastUpdated: Date() });
+    var newLot = new model({
+      ...req.body,
+      lastUpdated: new Date(localDate).toISOString()
+    });
     const savedLot = await newLot.save();
     res.json(savedLot);
   } catch (error) {
@@ -46,14 +50,14 @@ export const getLot = async (req: Request, res: Response) => {
 
 export const updateLot = async (req: Request, res: Response) => {
   if (req.body._id) {
-    res.status(403).end('Cannot modify the _id for a lot that already exists');
+    res.status(403).end("Cannot modify the _id for a lot that already exists");
   } else {
     try {
-    
+      const localDate = new Date().toLocaleString("en-US");
       if (req.body._id) console.log(req.body._id);
       const lot = await model.findOneAndUpdate(
         { _id: req.params.lotId },
-        { ...req.body, lastUpdated: Date() },
+        { ...req.body, lastUpdated: new Date(localDate).toISOString() },
         { new: true }
       );
       res.status(200).json(lot);
@@ -72,31 +76,37 @@ export const deleteLot = async (req: Request, res: Response) => {
   }
 };
 
-export const logLotUpdate = async (lot: LotType, didCarEnter: boolean, lotId: string) => {
+export const logLotUpdate = async (
+  lot: LotType,
+  didCarEnter: boolean,
+  lotId: string
+) => {
+  const localDate = new Date().toLocaleString("en-US");
+
   // log that a car left the lot
   const log = new LotLog({
     lotName: lot.lotName,
     lotId: lotId,
     numSpots: lot.numSpots,
     totalSpots: lot.totalSpots,
-    time: Date(),
+    time: new Date(localDate).toISOString(),
     didCarEnter: didCarEnter
   });
 
-  await log.save()
-}
-
+  await log.save();
+};
 
 // increments numSpots when a car goes
 export const carOut = async (req: Request, res: Response) => {
   // Get the lot by lotID
   try {
-    const lotToUpdate = await model.findById(req.params.lotId)
+    const lotToUpdate = await model.findById(req.params.lotId);
 
     // increment the number of spots
-    req.body.numSpots = lotToUpdate.numSpots -= 1
+    req.body.numSpots = lotToUpdate.numSpots -= 1;
 
     try {
+      const localDate = new Date().toLocaleString("en-US");
       // update the number of spots in the lot
       const updatedLot = await model.findOneAndUpdate(
         {
@@ -104,13 +114,12 @@ export const carOut = async (req: Request, res: Response) => {
         },
         {
           ...req.body,
-          lastUpdated: Date()
+          lastUpdated: new Date(localDate).toISOString()
         },
         {
           new: true
         }
-      )
-
+      );
 
       await logLotUpdate(updatedLot, false, req.params.lotId)
       const io = req.app.get(`socketio`)
@@ -119,26 +128,25 @@ export const carOut = async (req: Request, res: Response) => {
       res.json(updatedLot)
     } catch (error) {
       // TODO: add correct status code
-      res.send(error)
+      res.send(error);
     }
-
   } catch (error) {
     // TODO: add correct status code
-    res.send(error)
+    res.send(error);
   }
-
 };
 
 // decrements numSpots when a car goes
 export const carIn = async (req: Request, res: Response) => {
   // Get the lot by lotID
   try {
-    const lotToUpdate = await model.findById(req.params.lotId)
+    const lotToUpdate = await model.findById(req.params.lotId);
 
     // decrement the number of spots
-    req.body.numSpots = lotToUpdate.numSpots += 1
+    req.body.numSpots = lotToUpdate.numSpots += 1;
 
     try {
+      const localDate = new Date().toLocaleString("en-US");
       // update the number of spots in the lot
       const updatedLot = await model.findOneAndUpdate(
         {
@@ -146,13 +154,12 @@ export const carIn = async (req: Request, res: Response) => {
         },
         {
           ...req.body,
-          lastUpdated: Date()
+          lastUpdated: new Date(localDate).toISOString()
         },
         {
           new: true
         }
-      )
-
+      );
 
       await logLotUpdate(updatedLot, true, req.params.lotId)
       const io = req.app.get(`socketio`)
@@ -161,12 +168,10 @@ export const carIn = async (req: Request, res: Response) => {
       res.json(updatedLot)
     } catch (error) {
       // TODO: add correct status code
-      res.send(error)
+      res.send(error);
     }
-
   } catch (error) {
     // TODO: add correct status code
-    res.send(error)
+    res.send(error);
   }
-
 };
