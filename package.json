@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/server.js",
-    "test": "MONGODB_URI=\"mongodb://127.0.0.1:27017/LiveLotAPI_TEST\" nodemon --watch . --ext ts --exec \"mocha -r ts-node/register ./src/test/*.test.ts\"",
+    "test": "MONGODB_URI=\"mongodb://127.0.0.1:27017/LiveLotAPI_TEST\" bash ./scripts/run-unit-tests.sh",
     "start": "node ./built/server.js",
     "local": "nodemon server.js",
     "docker": "tsc && docker-compose up"

@@ -47,7 +47,6 @@ import auth from "../middleware/auth";
 import { Application } from 'express'
 
 export const routes = (app: Application) => {
-  console.log('in routes');
   // user Routes
   app
     .route(`/user`)
