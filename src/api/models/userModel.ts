@@ -6,6 +6,8 @@
 import mongoose from 'mongoose'
 import { Schema, model } from 'mongoose'
 
+mongoose.set('useFindAndModify', false);
+
 export type UserType = {
     username: string,
     password: string,

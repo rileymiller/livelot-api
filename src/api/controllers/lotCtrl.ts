@@ -18,7 +18,7 @@ export const getAllLots = async (req: Request, res: Response) => {
 
 export const deleteAllLots = async (req: Request, res: Response) => {
   try {
-    await model.remove({});
+    await model.deleteMany({});
     res.json({ message: 'Deleted all lots' });
   } catch (error) {
     res.send(error);
@@ -45,15 +45,21 @@ export const getLot = async (req: Request, res: Response) => {
 };
 
 export const updateLot = async (req: Request, res: Response) => {
-  try {
-    const lot = await model.findOneAndUpdate(
-      { _id: req.params.lotId },
-      { ...req.body, lastUpdated: Date() },
-      { new: true }
-    );
-    res.json(lot);
-  } catch (error) {
-    res.send(error);
+  if (req.body._id) {
+    res.status(403).end('Cannot modify the _id for a lot that already exists');
+  } else {
+    try {
+    
+      if (req.body._id) console.log(req.body._id);
+      const lot = await model.findOneAndUpdate(
+        { _id: req.params.lotId },
+        { ...req.body, lastUpdated: Date() },
+        { new: true }
+      );
+      res.status(200).json(lot);
+    } catch (error) {
+      res.send(error);
+    }
   }
 };
 

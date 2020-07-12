@@ -6,6 +6,9 @@
 import mongoose from 'mongoose'
 import { Schema, model } from 'mongoose'
 import { LotType } from './lotModel'
+
+mongoose.set('useFindAndModify', false);
+
 type CameraType = {
   cameraID: string
   ipv4: string
