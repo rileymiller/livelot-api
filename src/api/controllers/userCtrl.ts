@@ -26,7 +26,7 @@ export const getAllUsers = async (_: Request, res: Response) => {
 export const deleteAllUsers = async (_: Request, res: Response) => {
 
     try {
-        await model.remove({})
+        await model.deleteMany({})
         res.status(200).json({ message: 'Deleted all users' });
     } catch (error) {
         res.status(500).send(error)
@@ -37,7 +37,7 @@ export const createUser = async (req: Request, res: Response) => {
     try {
         const newUser = await new model(req.body);
 
-        await newUser.save()
+        await newUser.save();
         res.json(newUser);
     } catch (error) {
         res.send(error);
@@ -46,7 +46,7 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const getUser = async (req: Request, res: Response) => {
     try {
-        const user = model.findById(req.params.userId)
+        const user = await model.findById(req.params.userId);
         res.json(user);
     } catch (error) {
         res.send(error);
@@ -54,18 +54,22 @@ export const getUser = async (req: Request, res: Response) => {
 };
 
 export const updateUser = async (req: Request, res: Response) => {
-    try {
-        const user = await model.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true })
+    if (req.body._id) {
+        res.status(403).end('Cannot modify the _id for a user that already exists');
+      } else {
+        try {
+            const user = await model.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true })
 
-        res.json(user);
-    } catch (error) {
-        res.send(error);
+            res.json(user);
+        } catch (error) {
+            res.send(error);
+        }
     }
 };
 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
-        await model.remove({
+        await model.deleteOne({
             _id: req.params.userId
         })
 

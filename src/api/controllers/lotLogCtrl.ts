@@ -4,7 +4,6 @@
  */
 import { Request, Response } from 'express';
 import { LotLog as model } from '../models/lotLogModel'
-import { Lot } from '../models/lotModel'
 
 
 export const getAllLogs = async (req: Request, res: Response) => {
@@ -18,10 +17,9 @@ export const getAllLogs = async (req: Request, res: Response) => {
 
 export const getLogsForLot = async (req: Request, res: Response) => {
   try {
-    const lot = await Lot.findById(req.params.lotId);
     try {
-      const logs = await model.findById({
-        "lotId": lot._id
+      const logs = await model.find({
+        "lotId": req.params.lotId
       })
       res.json(logs)
     } catch (error) {
@@ -34,7 +32,7 @@ export const getLogsForLot = async (req: Request, res: Response) => {
 
 export const deleteAllLogs = async (req: Request, res: Response) => {
   try {
-    await model.remove({});
+    await model.deleteMany({});
     res.json({ message: "Successfully deleted all lots" });
   } catch (error) {
     res.send(error);

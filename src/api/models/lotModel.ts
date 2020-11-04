@@ -6,6 +6,8 @@
 import mongoose from 'mongoose'
 import { Schema, model } from 'mongoose'
 
+mongoose.set('useFindAndModify', false);
+
 export type LotType = {
   lotName: string,
   numSpots: number,

@@ -29,11 +29,9 @@ export const getAllCameras = async (req: Request, res: Response) => {
  * GET request
  */
 export const getCamera = async (req: Request, res: Response) => {
-  const { cameraID } = req.params
-  console.log(`cameraID:`, cameraID)
+  const { cameraID } = req.params;
   try {
-    const camera = await model.findOne({ cameraID: cameraID })
-    console.log(`CAMERA:`, camera)
+    const camera = await model.findOne({ _id: cameraID });
     if (camera) {
       res.status(200).json(
         camera
@@ -58,7 +56,6 @@ export const createCamera = async (req: Request, res: Response) => {
   try {
     var newCamera = new model({ ...req.body });
     const savedCamera = await newCamera.save();
-    console.log(savedCamera);
     res.json(savedCamera);
   } catch (error) {
     res.status(400).send(error);
@@ -72,7 +69,7 @@ export const createCamera = async (req: Request, res: Response) => {
  */
 export const deleteAllCameras = async (req: Request, res: Response) => {
   try {
-    await model.remove({})
+    await model.deleteMany({})
     res.status(200).json({ message: "Successfully deleted all camera entries" });
   } catch (err) {
     res.status(500).send(err);
